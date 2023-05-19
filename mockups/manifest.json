@@ -11,15 +11,11 @@
             "pagesIndex": {
                 "248140e0-d822-80a6-8002-700973b79f64": {
                     "name": "api_documentation"
-                },
-                "2c28cc43-71d8-8063-8002-79db2af417b2": {
-                    "name": "global_view"
                 }
             },
             "exportType": "all",
             "pages": [
-                "248140e0-d822-80a6-8002-700973b79f64",
-                "2c28cc43-71d8-8063-8002-79db2af417b2"
+                "248140e0-d822-80a6-8002-700973b79f64"
             ],
             "hasMedia": false,
             "shared": false,
