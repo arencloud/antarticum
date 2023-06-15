@@ -5,8 +5,6 @@ import (
 	"log"
 	"net/http"
 
-	"internal\routes"
-
 	"github.com/arencloud/antarticum/internal/routes"
 	"github.com/gin-gonic/gin"
 )
