@@ -1,39 +1,22 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
-	"internal\routes"
-
+	"github.com/arencloud/antarticum/internal/middlewares"
 	"github.com/arencloud/antarticum/internal/routes"
 	"github.com/gin-gonic/gin"
 )
 
-type Plugin interface {
-	Setup()
-}
-
-type ExamplePlugin struct{}
-
-func (p *ExamplePlugin) Setup() {
-	fmt.Println("Plugin setup")
-}
-
 func main() {
 	router := gin.Default()
 
+	// Pluggable support
+	router.Use(middlewares.JwtAuthMiddleware())
+
 	routes.InitializePatientsRoutes(router)
 	routes.InitializeHospitalRoutes(router)
-
-	plugins := []Plugin{
-		&ExamplePlugin{},
-	}
-
-	for _, plugin := range plugins {
-		plugin.Setup()
-	}
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
