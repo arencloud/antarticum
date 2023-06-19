@@ -65,7 +65,7 @@ func Register(c *gin.Context) {
 
 	patients = append(patients, newPatient)
 
-	c.JSON(http.StatusOK, gin.H{"message": "Validated and registered"})
+	c.JSON(http.StatusOK, gin.H{"message": newPatient})
 }
 
 func VerifyPassword(password, hashedPassword string) error {
@@ -73,7 +73,6 @@ func VerifyPassword(password, hashedPassword string) error {
 }
 
 func Login(c *gin.Context) {
-
 	var input LoginInput
 
 	if err := c.ShouldBindJSON(&input); err != nil {
