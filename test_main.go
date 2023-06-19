@@ -12,7 +12,6 @@ import (
 func main() {
 	router := gin.Default()
 
-	// Pluggable support
 	router.Use(middlewares.JwtAuthMiddleware())
 
 	routes.InitializePatientsRoutes(router)
@@ -27,7 +26,6 @@ func main() {
 		})
 	})
 
-	// Start the server
 	err := router.Run(":8000")
 	if err != nil {
 		log.Fatal(err)
