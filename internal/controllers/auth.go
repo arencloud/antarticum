@@ -102,7 +102,6 @@ func LoginCheck(email string, password string) (string, error) {
 	err := VerifyPassword(patientToFind.Password, password)
 	token, err := helpers.GenerateToken(patientToFind.ID)
 
-	//compare the user from the request, with the one we defined:
 	if patientToFind.Email != email || (err != nil && err == bcrypt.ErrMismatchedHashAndPassword) {
 		return "", err
 	}
