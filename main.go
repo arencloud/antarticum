@@ -28,7 +28,7 @@ func main() {
 
 	public.POST("/register", controllers.Register)
 	public.POST("/login", controllers.Login)
-	public.GET("/patients", controllers.GetPatients)
+	public.GET("/patients", controllers.GetUsers)
 
 	protected := router.Group("/api/v1/admin")
 	protected.Use(middlewares.JwtAuthMiddleware())

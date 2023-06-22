@@ -2,6 +2,8 @@ package helpers
 
 import (
 	"fmt"
+	"github.com/joho/godotenv"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -12,18 +14,21 @@ import (
 )
 
 func GenerateToken(userId int) (string, error) {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("err loading: %v", err)
+	}
 
-	//tokenLifespan, err := strconv.Atoi(os.Getenv("TOKEN_HOUR_LIFESPAN"))
-	//fmt.Println(os.Getenv("TOKEN_HOUR_LIFESPAN"))
+	tokenLifespan, err := strconv.Atoi(os.Getenv("TOKEN_HOUR_LIFESPAN"))
 
-	//if err != nil {
-	//	return "", err
-	//}
+	if err != nil {
+		return "", err
+	}
 
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["user_id"] = userId
-	claims["exp"] = time.Now().Add(time.Hour * time.Duration(1)).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * time.Duration(tokenLifespan)).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	return token.SignedString([]byte(os.Getenv("API_SECRET")))
