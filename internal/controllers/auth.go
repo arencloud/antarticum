@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-type Patient struct {
+type RegisterInput struct {
 	ID       int    `json:"patientId" binding:"required"`
 	Name     string `json:"fullName" binding:"required"`
 	Age      int    `json:"age"`
@@ -22,11 +22,11 @@ type LoginInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
-var patients []Patient
+var users []RegisterInput
 
-func GetUserByID(uid uint) (Patient, error) {
+func GetUserByID(uid uint) (RegisterInput, error) {
 
-	var u Patient
+	var u RegisterInput
 
 	//if err := DB.First(&u, uid).Error; err != nil {
 	//	return u, errors.New("user not found")
@@ -56,14 +56,14 @@ func CurrentUser(c *gin.Context) {
 }
 
 func Register(c *gin.Context) {
-	var newPatient Patient
+	var newPatient RegisterInput
 
 	if err := c.ShouldBindJSON(&newPatient); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	patients = append(patients, newPatient)
+	users = append(users, newPatient)
 
 	c.JSON(http.StatusOK, gin.H{"message": newPatient})
 }
@@ -92,8 +92,8 @@ func Login(c *gin.Context) {
 }
 
 func LoginCheck(email string, password string) (string, error) {
-	var patientToFind Patient
-	for _, patient := range patients {
+	var patientToFind RegisterInput
+	for _, patient := range users {
 		if fmt.Sprint(patient.Email) == email {
 			patientToFind = patient
 		}
@@ -110,6 +110,6 @@ func LoginCheck(email string, password string) (string, error) {
 	return token, nil
 }
 
-func GetPatients(c *gin.Context) {
-	c.JSON(200, patients)
+func GetUsers(c *gin.Context) {
+	c.JSON(200, users)
 }
