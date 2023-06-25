@@ -1,33 +1,27 @@
 package main
 
 import (
-	"log"
-	"net/http"
+	"os"
+	"testing"
 
+	"github.com/arencloud/antarticum/internal/controllers"
 	"github.com/arencloud/antarticum/internal/middlewares"
 	"github.com/arencloud/antarticum/internal/routes"
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
+func TestMain(m *testing.M) {
+	gin.SetMode(gin.TestMode)
+
 	router := gin.Default()
 
-	router.Use(middlewares.JwtAuthMiddleware())
+	mockPatientController := &controllers.MockPatientController{}
 
-	routes.InitializePatientsRoutes(router)
-	routes.InitializeDoctorsRoutes(router)
-	routes.InitializeLabResultsRoutes(router)
-	routes.InitializeAppointmentsRoutes(router)
-	routes.InitializeBillingInformationRoutes(router)
+	routes.InitializePatientsRoutesTest(router, mockPatientController)
 
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Successful",
-		})
-	})
+	router.Use(middlewares.MockJwtAuthMiddleware())
 
-	err := router.Run(":8000")
-	if err != nil {
-		log.Fatal(err)
-	}
+	exitCode := m.Run()
+
+	os.Exit(exitCode)
 }

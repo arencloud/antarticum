@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/arencloud/antarticum/internal/routes"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/arencloud/antarticum/internal/routes"
 
 	"github.com/stretchr/testify/assert"
 
