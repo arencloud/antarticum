@@ -5,7 +5,6 @@ import (
 	"net/http"
 )
 
-// Patient represents a patient entity.
 type Patient struct {
 	ID        string
 	Name      string
@@ -14,7 +13,6 @@ type Patient struct {
 	Condition string
 }
 
-// CreateDummyPatient creates a dummy patient instance for testing purposes.
 func CreateDummyPatient() *Patient {
 	return &Patient{
 		ID:        "123",
@@ -25,48 +23,33 @@ func CreateDummyPatient() *Patient {
 	}
 }
 
-// MockPatientController is a mock implementation of the patient controller.
 type MockPatientController struct{}
 
-// GetAllPatients is a mock implementation of the GetAllPatients handler.
 func (c *MockPatientController) GetAllPatients(ctx *gin.Context) {
-	// Create a dummy patient
 	dummyPatient := CreateDummyPatient()
 
-	// Return the dummy patient as a mock response
 	ctx.JSON(http.StatusOK, dummyPatient)
 }
 
-// CreatePatient is a mock implementation of the CreatePatient handler.
 func (c *MockPatientController) CreatePatient(ctx *gin.Context) {
-	// Create a dummy patient
 	dummyPatient := CreateDummyPatient()
 
-	// Return the dummy patient as a mock response
 	ctx.JSON(http.StatusOK, dummyPatient)
 }
 
-// GetPatientByID is a mock implementation of the GetPatientByID handler.
 func (c *MockPatientController) GetPatientByID(ctx *gin.Context) {
-	// Create a dummy patient
 	dummyPatient := CreateDummyPatient()
 
-	// Return the dummy patient as a mock response
 	ctx.JSON(http.StatusOK, dummyPatient)
 }
 
-// UpdatePatient is a mock implementation of the UpdatePatient handler.
 func (c *MockPatientController) UpdatePatient(ctx *gin.Context) {
-	// Create a dummy patient
 	dummyPatient := CreateDummyPatient()
 
-	// Return the dummy patient as a mock response
 	ctx.JSON(http.StatusOK, dummyPatient)
 }
 
-// DeletePatient is a mock implementation of the DeletePatient handler.
 func (c *MockPatientController) DeletePatient(ctx *gin.Context) {
-	// Return a mock response
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "DeletePatient mock response",
 	})
