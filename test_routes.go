@@ -1,19 +1,19 @@
 package main
 
 import (
-	"log"
 	"net/http"
+	"net/http/httptest"
+	"testing"
 
-	"github.com/arencloud/antarticum/internal/middlewares"
 	"github.com/arencloud/antarticum/internal/routes"
+
+	"github.com/stretchr/testify/assert"
+
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
+func TestRoutes(t *testing.T) {
 	router := gin.Default()
-
-	// Pluggable support
-	router.Use(middlewares.JwtAuthMiddleware())
 
 	routes.InitializePatientsRoutes(router)
 	routes.InitializeDoctorsRoutes(router)
@@ -21,15 +21,14 @@ func main() {
 	routes.InitializeAppointmentsRoutes(router)
 	routes.InitializeBillingInformationRoutes(router)
 
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Successful",
-		})
-	})
-
-	// Start the server
-	err := router.Run(":8000")
+	req, err := http.NewRequest("GET", "/", nil)
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
 	}
+
+	recorder := httptest.NewRecorder()
+
+	router.ServeHTTP(recorder, req)
+
+	assert.Equal(t, http.StatusOK, recorder.Code)
 }
