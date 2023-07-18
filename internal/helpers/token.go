@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"errors"
 	"fmt"
 	"github.com/joho/godotenv"
 	"log"
@@ -13,7 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GenerateToken(userId int) (string, error) {
+func GenerateToken(userId int, userRole string) (string, error) {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("err loading: %v", err)
@@ -28,6 +29,7 @@ func GenerateToken(userId int) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["user_id"] = userId
+	claims["role"] = userRole
 	claims["exp"] = time.Now().Add(time.Hour * time.Duration(tokenLifespan)).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
@@ -35,17 +37,36 @@ func GenerateToken(userId int) (string, error) {
 
 }
 
-func TokenValid(c *gin.Context) error {
+func TokenValid(c *gin.Context) (*jwt.Token, error) {
 	tokenString := ExtractToken(c)
-	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if token.Method != jwt.SigningMethodHS256 {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		return []byte(os.Getenv("API_SECRET")), nil
 	})
 	if err != nil {
-		return err
+		return nil, err
 	}
+	return token, nil
+}
+
+func AdminRoleValid(c *gin.Context) error {
+	token, err := TokenValid(c)
+	if err != nil {
+		return errors.New("token validation failed")
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
+		return errors.New("invalid token")
+	}
+
+	userRole := claims["role"]
+	if userRole != "admin" {
+		return errors.New("invalid admin token")
+	}
+
 	return nil
 }
 
@@ -61,7 +82,7 @@ func ExtractToken(c *gin.Context) string {
 	return ""
 }
 
-func ExtractTokenID(c *gin.Context) (uint, error) {
+func ExtractTokenID(c *gin.Context) (int, error) {
 
 	tokenString := ExtractToken(c)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -79,7 +100,7 @@ func ExtractTokenID(c *gin.Context) (uint, error) {
 		if err != nil {
 			return 0, err
 		}
-		return uint(uid), nil
+		return int(uid), nil
 	}
 	return 0, nil
 }

@@ -15,6 +15,7 @@ type RegisterInput struct {
 	Address  string `json:"address"`
 	Email    string `json:"email" binding:"required"`
 	Password string `json:"password" binding:"required"`
+	Role     string `json:"role" binding:"required"`
 }
 
 type LoginInput struct {
@@ -24,13 +25,19 @@ type LoginInput struct {
 
 var users []RegisterInput
 
-func GetUserByID(uid uint) (RegisterInput, error) {
+func GetUserByID(uid int) (RegisterInput, error) {
 
 	var u RegisterInput
 
 	//if err := DB.First(&u, uid).Error; err != nil {
 	//	return u, errors.New("user not found")
 	//}
+
+	for _, user := range users {
+		if user.ID == uid {
+			u = user
+		}
+	}
 
 	return u, nil
 
@@ -100,7 +107,7 @@ func LoginCheck(email string, password string) (string, error) {
 	}
 
 	err := VerifyPassword(patientToFind.Password, password)
-	token, err := helpers.GenerateToken(patientToFind.ID)
+	token, err := helpers.GenerateToken(patientToFind.ID, patientToFind.Role)
 
 	if patientToFind.Email != email || (err != nil && err == bcrypt.ErrMismatchedHashAndPassword) {
 		return "", err
