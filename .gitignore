@@ -22,7 +22,3 @@ go.work
 
 # Environement variables
 .env
-
-# IDE
-.DS_Store
-.idea
