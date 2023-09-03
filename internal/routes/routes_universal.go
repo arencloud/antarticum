@@ -15,9 +15,10 @@ type UniversalController interface {
 func InitializeRoutes(router *gin.Engine, entityName string, controller UniversalController) {
 	entityRoutes := router.Group("/" + entityName)
 
-	entityRoutes.GET("", controller.GetAll)
-	entityRoutes.POST("", controller.Create)
-	entityRoutes.GET("/:id", controller.GetByID)
-	entityRoutes.PUT("/:id", controller.Update)
-	entityRoutes.DELETE("/:id", controller.Delete)
+	entityRoutes.GET("/:org/:action/:any_attributes", controller.GetAll)
+	entityRoutes.POST("/:org/:action/:any_attributes", controller.Create)
+	entityRoutes.GET("/:org/:action/:any_attributes/:id", controller.GetByID)
+	entityRoutes.PUT("/:org/:action/:any_attributes/:id", controller.Update)
+	entityRoutes.DELETE("/:org/:action/:any_attributes/:id", controller.Delete)
+
 }
