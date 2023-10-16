@@ -8,6 +8,16 @@ import (
 	"strings"
 )
 
+type CommonDataStructure struct {
+	ID       int    `json:"patientId" binding:"required"`
+	Name     string `json:"fullName" binding:"required"`
+	Age      int    `json:"age"`
+	Address  string `json:"address"`
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
+	Role     string `json:"role" binding:"required"`
+}
+
 func FormatMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		format := strings.ToLower(c.DefaultQuery("format", "json"))
