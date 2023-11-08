@@ -9,13 +9,13 @@ import (
 )
 
 type CommonDataStructure struct {
-	ID       int    `json:"patientId" binding:"required"`
-	Name     string `json:"fullName" binding:"required"`
-	Age      int    `json:"age"`
-	Address  string `json:"address"`
-	Email    string `json:"email" binding:"required"`
-	Password string `json:"password" binding:"required"`
-	Role     string `json:"role" binding:"required"`
+	ID       int    `json:"patientId" xml:"patientId" yaml:"patientId" binding:"required"`
+	Name     string `json:"fullName" xml:"fullName" yaml:"fullName" binding:"required"`
+	Age      int    `json:"age" xml:"age" yaml:"age"`
+	Address  string `json:"address" xml:"address" yaml:"address"`
+	Email    string `json:"email" xml:"email" yaml:"email" binding:"required"`
+	Password string `json:"password" xml:"password" yaml:"password" binding:"required"`
+	Role     string `json:"role" xml:"role" yaml:"role" binding:"required"`
 }
 
 func FormatMiddleware() gin.HandlerFunc {
