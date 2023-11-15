@@ -8,6 +8,7 @@ import (
 
 func SetupProtectedRoutes(router *gin.Engine) {
 	protected := router.Group("/api/v1/admin")
+	router.Use(middlewares.FormatMiddleware())
 	protected.Use(middlewares.JwtAuthMiddleware())
 	protected.GET("/user", controllers.CurrentUser)
 }

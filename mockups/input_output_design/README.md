@@ -1,6 +1,4 @@
-## Middlewares
-
-## (data_format.go) Pluggable Interface for Handling Multiple Input/Output Formats
+# Pluggable Interface for Handling Multiple Input/Output Formats
 
 This repository demonstrates the implementation of a pluggable interface in an API to support multiple input/output formats, including JSON, XML, and YAML. The interface allows users to interact with the API using their preferred data format while maintaining a common data structure internally.
 

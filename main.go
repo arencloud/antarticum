@@ -27,6 +27,7 @@ func main() {
 	routes.SetupProtectedRoutes(router)
 
 	// Pluggable support
+	router.Use(middlewares.FormatMiddleware())
 	router.Use(middlewares.JwtAuthMiddleware())
 
 	routes.InitializePatientsRoutes(router)
