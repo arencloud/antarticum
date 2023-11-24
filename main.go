@@ -46,4 +46,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	authGroup := router.Group("/api/v1")
+	authGroup.Use(middlewares.JwtAuthMiddleware())
+	{
+		authGroup.GET("/patients", routes.GetPatients)
+    		authGroup.POST("/appointments", routes.CreateAppointment)
+    		// Add more authenticated routes here
+	}
 }
